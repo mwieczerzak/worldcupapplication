@@ -75,10 +75,10 @@ public class Library {
 
     private void savePlayerToFile(PrintWriter printWriter, Player player) {
         printWriter.println(player.getFirstName());
-        printWriter.print(player.getLastName());
-        printWriter.print(player.getAge());
-        printWriter.print(player.getPosition());
-        printWriter.print(player.getClub());
+        printWriter.println(player.getLastName());
+        printWriter.println(player.getAge());
+        printWriter.println(player.getPosition());
+        printWriter.println(player.getClub());
     }
 
 
