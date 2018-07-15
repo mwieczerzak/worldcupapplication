@@ -2,9 +2,7 @@ package com.mwieczerzak;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,13 +13,13 @@ public class Team {
     private String nationality;
     private String trainer;
     private List<Player> players;
-    private int fifaRanking;
+    private int fifaRankingPosition;
 
-    public Team(String nationality, String trainer, int fifaRanking) {
+    public Team(String nationality, String trainer, int fifaRankingPosition) {
         this.nationality = nationality;
         this.trainer = trainer;
         this.players = new ArrayList<>();
-        this.fifaRanking = fifaRanking;
+        this.fifaRankingPosition = fifaRankingPosition;
     }
 
     public void addPlayer(Player player) {
@@ -35,9 +33,22 @@ public class Team {
                 .orElse(Double.NaN);
     }
 
-    public Set<Position> getPlayerPosition(){
+    public Set<Position> getPlayerPositions(){
         return players.stream()
                 .map(player -> player.getPosition())
                 .collect(Collectors.toSet());
     }
+
+    public List<Player> findPlayerByLastName(String lastName){
+        return players.stream()
+                .filter(player -> player.getLastName().equalsIgnoreCase(lastName))
+                .collect(Collectors.toList());
+    }
+
+    public List<Player> findPlayersByPosition(Position position) {
+        return players.stream()
+                .filter(player -> player.getPosition() == position)
+                .collect(Collectors.toList());
+    }
+
 }

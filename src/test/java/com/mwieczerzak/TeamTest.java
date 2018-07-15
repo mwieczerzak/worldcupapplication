@@ -34,9 +34,9 @@ public class TeamTest {
         Team team = new Team("nationality", "trainer", 10);
         team.addPlayer(player1);
         team.addPlayer(player2);
-        Assertions.assertTrue(team.getPlayerPosition().size() == 2);
-        Assertions.assertTrue(team.getPlayerPosition().contains(Position.DEFENDER));
-        Assertions.assertTrue(team.getPlayerPosition().contains(Position.FORWARD));
+        Assertions.assertTrue(team.getPlayerPositions().size() == 2);
+        Assertions.assertTrue(team.getPlayerPositions().contains(Position.DEFENDER));
+        Assertions.assertTrue(team.getPlayerPositions().contains(Position.FORWARD));
     }
 
 }
