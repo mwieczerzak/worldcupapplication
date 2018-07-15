@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Library {
@@ -81,6 +82,52 @@ public class Library {
         printWriter.println(player.getClub());
     }
 
+    public void readFromFile() {
+        try {
+            File file = new File(FILENAME);
+            Scanner scanner = new Scanner(file);
+            teams.clear();
+            int number = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < number; i++) {
+                teams.add(readTeamFromFile(scanner));
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Problem with reading the file " + FILENAME);
+        }
+    }
+
+    private Team readTeamFromFile(Scanner scanner) {
+        String nationality = scanner.nextLine();
+        String trainer = scanner.nextLine();
+        int playerCount = Integer.parseInt(scanner.nextLine());
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < playerCount; i++) {
+            players.add(readPlayerFromFile(scanner));
+        }
+        int fifaRankingPosition = scanner.nextInt();
+        return new TeamBuilder()
+                .withNationalisty(nationality)
+                .withTrainer(trainer)
+                .withPlayers(players)
+                .withFifaRanking(fifaRankingPosition)
+                .build();
+    }
+
+    private Player readPlayerFromFile(Scanner scanner) {
+        String firstName = scanner.nextLine();
+        String lastName = scanner.nextLine();
+        int age = Integer.parseInt(scanner.nextLine());
+        Position position = Position.valueOf(scanner.nextLine());
+        String club = scanner.nextLine();
+        return new PlayerBuilder()
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withAge(age)
+                .withPosition(position)
+                .withClub(club)
+                .build();
+    }
 
 
 }

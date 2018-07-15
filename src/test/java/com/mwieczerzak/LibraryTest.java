@@ -30,6 +30,11 @@ public class LibraryTest {
         Library library = new Library();
         library.addTeam(team);
         library.saveToFile();
+    }
 
+    @Test
+    public void shouldReadFromFile(){
+        Library library = new Library();
+        library.readFromFile();
     }
 }
