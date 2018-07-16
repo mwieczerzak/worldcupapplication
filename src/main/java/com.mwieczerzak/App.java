@@ -1,9 +1,10 @@
 package com.mwieczerzak;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class App {
 
@@ -13,19 +14,61 @@ public class App {
         System.out.println("Thank you for using the program.");
     }
 
+    private static final int MAX_NUMBER_PLAYERS = 23;
+    private static final int MAX_NUMBER_OF_FIFA_RANKING = 100;
+
     private Library library;
     private Scanner scanner;
-    private static final int MAX_NUMBER_PLAYERS = 23;
+    private ScannerUtils scannerUtils;
 
     public App() {
         library = new Library();
         scanner = new Scanner(System.in);
+        scannerUtils = new ScannerUtils(scanner);
     }
 
     public void start() {
         library.readFromFile();
         mainMenu();
         library.saveToFile();
+    }
+
+    private void mainMenu() {
+        System.out.println("Welcome to the program");
+        boolean repeat = true;
+        while (repeat) {
+            showMainMenu();
+            int option = scannerUtils.readInt(9);
+            switch (option) {
+                case 1:
+                    addNewTeam();
+                    break;
+                case 2:
+                    deleteTeam();
+                    break;
+                case 3:
+                    showAllTeams();
+                    break;
+                case 4:
+                    findTeamByNationality();
+                    break;
+                case 5:
+                    findPlayerByLastname();
+                    break;
+                case 6:
+                    findTeamByPlayerLastname();
+                    break;
+                case 7:
+                    findPlayersByPosition();
+                    break;
+                case 8:
+                    findTeamByFifaRankingPosition();
+                    break;
+                case 9:
+                    repeat = false;
+                    break;
+            }
+        }
     }
 
     private void showMainMenu() {
@@ -38,6 +81,7 @@ public class App {
         System.out.println("7. Find players by position");
         System.out.println("8. Find team by FIFA Ranking position");
         System.out.println("9. Exit the program");
+        System.out.println("What you choose?");
     }
 
     private void addNewTeam() {
@@ -54,7 +98,7 @@ public class App {
 
     private void addNewPlayers(Team team) {
         System.out.println("Enter the number of players:");
-        int playerCount = readInt(MAX_NUMBER_PLAYERS);
+        int playerCount = scannerUtils.readInt(MAX_NUMBER_PLAYERS);
         for (int i = 0; i < playerCount; i++) {
             addNewPlayer(team);
         }
@@ -81,12 +125,18 @@ public class App {
             System.out.println((i + 1) + ". " + allPositions[i].getDescription());
         }
         System.out.println("Enter number:");
-        int index = readInt(allPositions.length) - 1;
+        int index = scannerUtils.readInt(allPositions.length) - 1;
         return allPositions[index];
     }
 
     private void deleteTeam() {
-
+        List<Team> allTeams = library.getTeams();
+        for (int i = 0; i < allTeams.size(); i++) {
+            System.out.println((i + 1) + "." + allTeams.get(i));
+        }
+        System.out.println("Enter number of the team you want to delete:");
+        int index = scannerUtils.readInt(allTeams.size());
+        library.removeTeam(index);
     }
 
     private void showAllTeams() {
@@ -95,68 +145,55 @@ public class App {
             System.out.println((i + 1) + ". " + allTeams.get(i));
         }
         System.out.println("Enter the number of the team to display:");
-        int index = readInt(library.getTeams().size()) - 1;
+        int index = scannerUtils.readInt(library.getTeams().size()) - 1;
         System.out.println(library.getTeams().get(index).toFullString());
     }
 
     private void findTeamByNationality() {
+        System.out.println("Enter name of the team you looking for:");
+        String teamToSearch = scanner.nextLine();
+        List<Team> allTeams = library.findTeamByNationality(teamToSearch);
+        if (allTeams.isEmpty()) {
+            System.out.println("Sorry, there is no such team.");
+        } else {
+            for (Team team : allTeams) {
+                System.out.println(team.toFullString());
+            }
+        }
     }
 
     private void findPlayerByLastname() {
+        System.out.println("Enter lastname of the player you looking for:");
+        String playerToSearch = scanner.nextLine();
+        List<Player> allPlayers = library.findPlayersByLastName(playerToSearch);
+        if (allPlayers.isEmpty()) {
+            System.out.println("Sorry, there is no such a player.");
+        } else {
+            for (Player player : allPlayers) {
+                System.out.println(player.toString());
+            }
+        }
     }
 
     private void findTeamByPlayerLastname() {
     }
 
     private void findPlayersByPosition() {
+        Position position = readPosition();
+        List<Player> allPlayers = library.findPlayersByPosition(position);
+        for (Player player : allPlayers) {
+            System.out.println(player.toString());
+        }
     }
 
     private void findTeamByFifaRankingPosition() {
-    }
-
-    private void mainMenu() {
-        System.out.println("Welcome to the program");
-        boolean repeat = true;
-        while (repeat) {
-            showMainMenu();
-            int option = readInt(9);
-            switch (option) {
-                case 1:
-                    addNewTeam();
-                    break;
-                case 2:
-                    //
-                    break;
-                case 3:
-                    showAllTeams();
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    repeat = false;
-                    break;
-            }
+        System.out.println("Enter position in FIFA Ranking:");
+        int position = scannerUtils.readInt(MAX_NUMBER_OF_FIFA_RANKING);
+        List<Team> allTeams = library.findTeamByFifaRankingPosition(position);
+        for (Team team : allTeams) {
+            System.out.println(team.getNationality());
         }
     }
 
-    private int readInt(int max) {
-        while (true) {
-            try {
-                int menuPosition = Integer.parseInt(scanner.nextLine());
-                if (menuPosition >= 1 && menuPosition <= max) {
-                    return menuPosition;
-                }
-            } catch (NumberFormatException e) {
-            }
-            System.out.println("You have to type number from 1 to " + max + ".");
-        }
-    }
+
 }

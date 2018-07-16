@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -60,12 +59,6 @@ public class Team {
                 .mapToDouble(player -> player.getAge())
                 .average()
                 .orElse(Double.NaN);
-    }
-
-    public Set<Position> getPlayerPositions() {
-        return players.stream()
-                .map(player -> player.getPosition())
-                .collect(Collectors.toSet());
     }
 
     public List<Player> findPlayerByLastName(String lastName) {

@@ -23,22 +23,4 @@ public class TeamTest {
                 .build();
         Assertions.assertTrue(team.getAverageAgeOfPlayers() == (double)(22 + 28 + 23) / 3);
     }
-
-    @Test
-    public void shouldGetPlayerPosition(){
-        Player player1 = new PlayerBuilder()
-                .withPosition(Position.DEFENDER)
-                .build();
-        Player player2 = new PlayerBuilder()
-                .withPosition(Position.FORWARD)
-                .build();
-        Team team = new TeamBuilder()
-                .withPlayer(player1)
-                .withPlayer(player2)
-                .build();
-        Assertions.assertTrue(team.getPlayerPositions().size() == 2);
-        Assertions.assertTrue(team.getPlayerPositions().contains(Position.DEFENDER));
-        Assertions.assertTrue(team.getPlayerPositions().contains(Position.FORWARD));
-    }
-
 }
