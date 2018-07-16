@@ -18,6 +18,10 @@ public class Library {
         teams = new ArrayList<>();
     }
 
+    public List<Team> getTeams() {
+        return teams;
+    }
+
     public void addTeam(Team team) {
         teams.add(team);
     }

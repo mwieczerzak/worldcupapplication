@@ -1,5 +1,6 @@
 package com.mwieczerzak;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -7,6 +8,7 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
         app.start();
+        System.out.println("Thank you for using the program.");
     }
 
     private Library library;
@@ -35,6 +37,39 @@ public class App {
         System.out.println("9. Exit the program");
     }
 
+    private void addNewTeam() {
+
+    }
+
+    private void deleteTeam() {
+
+    }
+
+    private void showAllTeams() {
+        List<Team> allTeams = library.getTeams();
+        for (int i = 0; i < allTeams.size(); i++) {
+            System.out.println((i+1) + ". " + allTeams.get(i));
+        }
+        System.out.println("Enter the number of the team to display.");
+        int index = readInt(library.getTeams().size()) - 1;
+        System.out.println(library.getTeams().get(index).toFullString());
+    }
+
+    private void findTeamByNationality() {
+    }
+
+    private void findPlayerByLastname() {
+    }
+
+    private void findTeamByPlayerLastname() {
+    }
+
+    private void findPlayersByPosition() {
+    }
+
+    private void findTeamByFifaRankingPosition() {
+    }
+
     private void mainMenu() {
         System.out.println("Welcome to the program");
         boolean repeat = true;
@@ -49,6 +84,7 @@ public class App {
                     //
                     break;
                 case 3:
+                    showAllTeams();
                     break;
                 case 4:
                     break;

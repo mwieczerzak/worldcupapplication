@@ -22,6 +22,35 @@ public class Team {
         this.fifaRankingPosition = fifaRankingPosition;
     }
 
+    @Override
+    public String toString() {
+        return nationality
+                + ", trainer: " + trainer
+                + ", players: " + players.size()
+                + ", average age: " + getAverageAgeOfPlayers()
+                + ", FIFA Ranking position: " + fifaRankingPosition
+                + ".";
+    }
+
+    public String toFullString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(nationality);
+        stringBuilder.append(", trainer: ");
+        stringBuilder.append(trainer);
+        stringBuilder.append(", average age: ");
+        stringBuilder.append(getAverageAgeOfPlayers());
+        stringBuilder.append(", FIFA Ranking position ");
+        stringBuilder.append(fifaRankingPosition);
+        stringBuilder.append("\n");
+        for (int i = 0; i < players.size(); i++) {
+            stringBuilder.append(i + 1);
+            stringBuilder.append(". ");
+            stringBuilder.append(players.get(i));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
     public void addPlayer(Player player) {
         players.add(player);
     }
@@ -33,13 +62,13 @@ public class Team {
                 .orElse(Double.NaN);
     }
 
-    public Set<Position> getPlayerPositions(){
+    public Set<Position> getPlayerPositions() {
         return players.stream()
                 .map(player -> player.getPosition())
                 .collect(Collectors.toSet());
     }
 
-    public List<Player> findPlayerByLastName(String lastName){
+    public List<Player> findPlayerByLastName(String lastName) {
         return players.stream()
                 .filter(player -> player.getLastName().equalsIgnoreCase(lastName))
                 .collect(Collectors.toList());

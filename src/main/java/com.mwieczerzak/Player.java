@@ -13,4 +13,13 @@ public class Player {
     private Position position;
     private String club;
 
+    @Override
+    public String toString() {
+        return firstName + " "
+                + lastName
+                + ", age: " + age
+                + ", position: " + position.getDescription()
+                + ", club: " + club
+                + ".";
+    }
 }
