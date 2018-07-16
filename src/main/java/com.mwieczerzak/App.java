@@ -13,6 +13,7 @@ public class App {
 
     private Library library;
     private Scanner scanner;
+    private static final int MAX_NUMBER_PLAYERS = 23;
 
     public App() {
         library = new Library();
@@ -38,6 +39,26 @@ public class App {
     }
 
     private void addNewTeam() {
+        System.out.println("Enter the name of the team:");
+        String nationality = scanner.nextLine();
+        System.out.println("Enter trainer:");
+        String trainer = scanner.nextLine();
+        System.out.println("Enter FIFA Ranking position:");
+        int fifaRankingPosition = Integer.parseInt(scanner.nextLine());
+        Team team = new Team(nationality, trainer, fifaRankingPosition);
+        addNewPlayers(team);
+        library.addTeam(team);
+    }
+
+    private void addNewPlayers(Team team){
+        System.out.println("Enter the number of players:");
+        int playerCount = readInt(MAX_NUMBER_PLAYERS);
+        for (int i = 0; i < playerCount; i++) {
+            addNewPlayer(team);
+        }
+    }
+
+    private void addNewPlayer(Team team) {
 
     }
 
@@ -50,7 +71,7 @@ public class App {
         for (int i = 0; i < allTeams.size(); i++) {
             System.out.println((i+1) + ". " + allTeams.get(i));
         }
-        System.out.println("Enter the number of the team to display.");
+        System.out.println("Enter the number of the team to display:");
         int index = readInt(library.getTeams().size()) - 1;
         System.out.println(library.getTeams().get(index).toFullString());
     }
@@ -78,7 +99,7 @@ public class App {
             int option = readInt(9);
             switch (option) {
                 case 1:
-                    //
+                    addNewTeam();
                     break;
                 case 2:
                     //
