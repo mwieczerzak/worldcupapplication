@@ -109,7 +109,7 @@ public class Library {
         for (int i = 0; i < playerCount; i++) {
             players.add(readPlayerFromFile(scanner));
         }
-        int fifaRankingPosition = scanner.nextInt();
+        int fifaRankingPosition = Integer.parseInt(scanner.nextLine());
         return new TeamBuilder()
                 .withNationalisty(nationality)
                 .withTrainer(trainer)

@@ -1,5 +1,7 @@
 package com.mwieczerzak;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,7 +52,7 @@ public class App {
         library.addTeam(team);
     }
 
-    private void addNewPlayers(Team team){
+    private void addNewPlayers(Team team) {
         System.out.println("Enter the number of players:");
         int playerCount = readInt(MAX_NUMBER_PLAYERS);
         for (int i = 0; i < playerCount; i++) {
@@ -59,7 +61,28 @@ public class App {
     }
 
     private void addNewPlayer(Team team) {
+        System.out.println("Enter player firstname:");
+        String firstName = scanner.nextLine();
+        System.out.println("Enter player lastname:");
+        String lastName = scanner.nextLine();
+        System.out.println("Enter player age:");
+        int age = Integer.parseInt(scanner.nextLine());
+        Position position = readPosition();
+        System.out.println("Enter player club:");
+        String club = scanner.nextLine();
+        Player player = new Player(firstName, lastName, age, position, club);
+        team.addPlayer(player);
+    }
 
+    private Position readPosition() {
+        Position[] allPositions = Position.values();
+        System.out.println("Types of positions:");
+        for (int i = 0; i < allPositions.length; i++) {
+            System.out.println((i + 1) + ". " + allPositions[i].getDescription());
+        }
+        System.out.println("Enter number:");
+        int index = readInt(allPositions.length) - 1;
+        return allPositions[index];
     }
 
     private void deleteTeam() {
@@ -69,7 +92,7 @@ public class App {
     private void showAllTeams() {
         List<Team> allTeams = library.getTeams();
         for (int i = 0; i < allTeams.size(); i++) {
-            System.out.println((i+1) + ". " + allTeams.get(i));
+            System.out.println((i + 1) + ". " + allTeams.get(i));
         }
         System.out.println("Enter the number of the team to display:");
         int index = readInt(library.getTeams().size()) - 1;
