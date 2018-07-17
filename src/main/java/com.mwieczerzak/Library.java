@@ -30,11 +30,6 @@ public class Library {
         teams.remove(index);
     }
 
-    public List<Team> findTeamByNationality(String nationality) {
-        return teams.stream()
-                .filter(team -> team.getNationality().equalsIgnoreCase(nationality))
-                .collect(Collectors.toList());
-    }
 
     public List<Player> findPlayersByLastName(String lastName) {
         return teams.stream()
@@ -48,9 +43,23 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
+    public List<Team> findTeamByNationality(String nationality) {
+        return teams.stream()
+                .filter(team -> team.getNationality().equalsIgnoreCase(nationality))
+                .collect(Collectors.toList());
+    }
+
     public List<Team> findTeamByFifaRankingPosition(int fifaRankingPosition) {
         return teams.stream()
                 .filter(team -> team.getFifaRankingPosition() == fifaRankingPosition)
+                .collect(Collectors.toList());
+    }
+
+    public List<Team> findTeamByPlayerLastname(String lastName) {
+        return teams.stream()
+                .filter(team -> team.getPlayers()
+                        .stream()
+                        .anyMatch(player -> player.getLastName().equalsIgnoreCase(lastName)))
                 .collect(Collectors.toList());
     }
 

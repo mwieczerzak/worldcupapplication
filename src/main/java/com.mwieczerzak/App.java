@@ -1,10 +1,7 @@
 package com.mwieczerzak;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class App {
 
@@ -72,15 +69,15 @@ public class App {
     }
 
     private void showMainMenu() {
-        System.out.println("1. Add new football team");
-        System.out.println("2. Delete football team");
-        System.out.println("3. Display all teams");
-        System.out.println("4. Find team by nationality");
-        System.out.println("5. Find player by lastname");
-        System.out.println("6. Find team by player lastname");
-        System.out.println("7. Find players by position");
-        System.out.println("8. Find team by FIFA Ranking position");
-        System.out.println("9. Exit the program");
+        System.out.println("1. Add new football team.");
+        System.out.println("2. Delete football team.");
+        System.out.println("3. Display all teams.");
+        System.out.println("4. Find team by nationality.");
+        System.out.println("5. Find player by lastname.");
+        System.out.println("6. Find team by player lastname.");
+        System.out.println("7. Find players by position.");
+        System.out.println("8. Find team by FIFA Ranking position.");
+        System.out.println("9. Exit the program.");
         System.out.println("What you choose?");
     }
 
@@ -129,71 +126,64 @@ public class App {
         return allPositions[index];
     }
 
-    private void deleteTeam() {
-        List<Team> allTeams = library.getTeams();
-        for (int i = 0; i < allTeams.size(); i++) {
-            System.out.println((i + 1) + "." + allTeams.get(i));
-        }
-        System.out.println("Enter number of the team you want to delete:");
-        int index = scannerUtils.readInt(allTeams.size());
-        library.removeTeam(index);
-    }
-
     private void showAllTeams() {
         List<Team> allTeams = library.getTeams();
-        for (int i = 0; i < allTeams.size(); i++) {
-            System.out.println((i + 1) + ". " + allTeams.get(i));
-        }
+        showList(allTeams);
         System.out.println("Enter the number of the team to display:");
         int index = scannerUtils.readInt(library.getTeams().size()) - 1;
         System.out.println(library.getTeams().get(index).toFullString());
     }
 
+    private void deleteTeam() {
+        List<Team> allTeams = library.getTeams();
+        showList(allTeams);
+        System.out.println("Enter number of the team you want to delete:");
+        int index = scannerUtils.readInt(allTeams.size());
+        library.removeTeam(index - 1);
+    }
+
     private void findTeamByNationality() {
         System.out.println("Enter name of the team you looking for:");
-        String teamToSearch = scanner.nextLine();
-        List<Team> allTeams = library.findTeamByNationality(teamToSearch);
-        if (allTeams.isEmpty()) {
-            System.out.println("Sorry, there is no such team.");
-        } else {
-            for (Team team : allTeams) {
-                System.out.println(team.toFullString());
-            }
-        }
+        String nationality = scanner.nextLine();
+        List<Team> teamByNationality = library.findTeamByNationality(nationality);
+        showList(teamByNationality);
     }
 
     private void findPlayerByLastname() {
         System.out.println("Enter lastname of the player you looking for:");
-        String playerToSearch = scanner.nextLine();
-        List<Player> allPlayers = library.findPlayersByLastName(playerToSearch);
-        if (allPlayers.isEmpty()) {
-            System.out.println("Sorry, there is no such a player.");
-        } else {
-            for (Player player : allPlayers) {
-                System.out.println(player.toString());
-            }
-        }
+        String lastName = scanner.nextLine();
+        List<Player> playersByLastName = library.findPlayersByLastName(lastName);
+        showList(playersByLastName);
     }
 
     private void findTeamByPlayerLastname() {
+        System.out.println("Enter lastname of the player: ");
+        String lastName = scanner.nextLine();
+        List<Team> teamByPlayerLastname = library.findTeamByPlayerLastname(lastName);
+        showList(teamByPlayerLastname);
     }
 
     private void findPlayersByPosition() {
         Position position = readPosition();
-        List<Player> allPlayers = library.findPlayersByPosition(position);
-        for (Player player : allPlayers) {
-            System.out.println(player.toString());
-        }
+        List<Player> playersByPosition = library.findPlayersByPosition(position);
+        showList(playersByPosition);
     }
 
     private void findTeamByFifaRankingPosition() {
         System.out.println("Enter position in FIFA Ranking:");
         int position = scannerUtils.readInt(MAX_NUMBER_OF_FIFA_RANKING);
-        List<Team> allTeams = library.findTeamByFifaRankingPosition(position);
-        for (Team team : allTeams) {
-            System.out.println(team.getNationality());
-        }
+        List<Team> teamByFifaRankingPosition = library.findTeamByFifaRankingPosition(position);
+        showList(teamByFifaRankingPosition);
     }
 
-
+    private void showList(List<? extends Object> objects) {
+        if (!objects.isEmpty()) {
+            for (int i = 0; i < objects.size(); i++) {
+                System.out.println((i + 1) + ". " + objects.get(i));
+            }
+            System.out.println();
+        } else {
+            System.out.println("Sorry, there is no such position in library." + "\n");
+        }
+    }
 }
